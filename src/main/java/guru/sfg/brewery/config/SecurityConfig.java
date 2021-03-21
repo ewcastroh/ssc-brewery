@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -61,13 +62,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("spring")
                 //.password("{noop}guru")
                 // Using NoOpPasswordEncoder Bean we don't need to use {noop} in password
-                .password("guru")
+                .password("{SSHA}Cnaz+iY1ysAzuUSSn8aLyiBQwNrcmR7VE1zqKw==")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
                 //.password("password")
                 // Using NoOpPasswordEncoder Bean we don't need to use {noop} in password
-                .password("password")
+                //.password("password")
+                // Password encode using Ldap
+                .password("{SSHA}nRTMXs6l1VdyL19ZCPh4PgMl0O03dMp9LuWYUA==")
                 .roles("USER");
 
         auth.inMemoryAuthentication()
@@ -78,8 +81,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("CUSTOMER");
     }
 
-    @Bean
+    /*@Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
+    }*/
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new LdapShaPasswordEncoder();
     }
 }
