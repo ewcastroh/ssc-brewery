@@ -2,6 +2,7 @@ package guru.sfg.brewery.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
@@ -56,16 +59,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
-                .password("{noop}guru")
+                //.password("{noop}guru")
+                // Using NoOpPasswordEncoder Bean we don't need to use {noop} in password
+                .password("guru")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("{noop}password")
+                //.password("password")
+                // Using NoOpPasswordEncoder Bean we don't need to use {noop} in password
+                .password("password")
                 .roles("USER");
 
         auth.inMemoryAuthentication()
                 .withUser("scott")
-                .password("{noop}tiger")
+                //.password("{noop}tiger")
+                // Using NoOpPasswordEncoder Bean we don't need to use {noop} in password
+                .password("tiger")
                 .roles("CUSTOMER");
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 }
