@@ -1,5 +1,6 @@
-package guru.sfg.brewery.web.controllers;
+package guru.sfg.brewery.web.controllers.api;
 
+import guru.sfg.brewery.web.controllers.BaseIT;
 import org.junit.jupiter.api.Test;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
