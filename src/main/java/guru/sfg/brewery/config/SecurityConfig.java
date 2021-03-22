@@ -1,5 +1,6 @@
 package guru.sfg.brewery.config;
 
+import guru.sfg.brewery.security.CustomPasswordEncoderFactories;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.ExampleMatcher;
@@ -122,8 +123,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }*/
 
     // Using PasswordEncoderFactories.createDelegatingPasswordEncoder() we can use different password encoders
-    @Bean
+    /*@Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }*/
+
+    // Using CustomPasswordEncoderFactories.createDelegatingPasswordEncoder() we can use different custom password encoders
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return CustomPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
