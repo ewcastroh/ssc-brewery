@@ -11,9 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
@@ -72,7 +74,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Password encode using LDAP
                 //.password("{SSHA}nRTMXs6l1VdyL19ZCPh4PgMl0O03dMp9LuWYUA==")
                 // Password using SHA-256
-                .password("0176a42f78344abe8899099f1137814b26caa248a7c246f75bef830ad984836cdf236ad11697b790")
+                //.password("0176a42f78344abe8899099f1137814b26caa248a7c246f75bef830ad984836cdf236ad11697b790")
+                // Password using BCrypt
+                .password("$2a$10$ebiFTDBHSrTWylESpbVFzOYtRJAC1hgnPQDCFs7XUAZWQiVZnjPp6")
                 .roles("USER");
 
         auth.inMemoryAuthentication()
@@ -83,13 +87,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("CUSTOMER");
     }
 
+    // Using NoOpPasswordEncoder Bean we don't need to use {noop} in password.
+    // Always generates a different hashed string using a SALT value.
     /*@Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }*/
 
-    @Bean
+    // Password encode using LDAP
+    // Always generates a different hashed string using a SALT value.
+    /*@Bean
     public PasswordEncoder passwordEncoder() {
         return new LdapShaPasswordEncoder();
+    }*/
+
+    // Password using SHA-256
+    // Always generates a different hashed string using a SALT value.
+    /*@Bean
+    public PasswordEncoder passwordEncoder() {
+        return new StandardPasswordEncoder();
+    }*/
+
+    // Password using BCrypt. This is the Spring recommendation.
+    // Always generates a different hashed string using a SALT value.
+    // It can setting up a strong in the constructor
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

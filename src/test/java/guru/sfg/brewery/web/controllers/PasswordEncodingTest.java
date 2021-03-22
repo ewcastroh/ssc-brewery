@@ -1,6 +1,7 @@
 package guru.sfg.brewery.web.controllers;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,5 +45,16 @@ public class PasswordEncodingTest {
         System.out.println("SHA-256 Encoded 1: ".concat(sha256Encoded1));
         System.out.println("SHA-256 Encoded 2: ".concat(sha256Encoded2));
         assertTrue(sha256.matches(PASSWORD, sha256Encoded2));
+    }
+
+    @Test
+    void bCryptTest() {
+        PasswordEncoder bCrypt = new BCryptPasswordEncoder();
+        String bCrypt1 = bCrypt.encode(PASSWORD);
+        String bCrypt2 = bCrypt.encode(PASSWORD);
+        System.out.println("BCrypt Encoded 1: ".concat(bCrypt1));
+        System.out.println("BCrypt Encoded 2: ".concat(bCrypt2));
+        assertTrue(bCrypt.matches(PASSWORD, bCrypt1));
+        assertTrue(bCrypt.matches(PASSWORD, bCrypt2));
     }
 }
