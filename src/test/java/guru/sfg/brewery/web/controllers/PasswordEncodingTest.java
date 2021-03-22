@@ -31,7 +31,7 @@ public class PasswordEncodingTest {
     void ldapTest() {
         PasswordEncoder ldap = new LdapShaPasswordEncoder();
         String ldapEncoded1 = ldap.encode(PASSWORD);
-        String ldapEncoded2 = ldap.encode("guru");
+        String ldapEncoded2 = ldap.encode(PASSWORD);
         System.out.println("LDAP Encoded 1:".concat(ldapEncoded1));
         System.out.println("LDAP Encoded 2:".concat(ldapEncoded2));
         assertTrue(ldap.matches(PASSWORD, ldapEncoded1));

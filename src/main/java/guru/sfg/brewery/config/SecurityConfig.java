@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,7 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("spring")
                 //.password("{noop}guru")
                 // Using NoOpPasswordEncoder Bean we don't need to use {noop} in password
-                .password("{SSHA}Cnaz+iY1ysAzuUSSn8aLyiBQwNrcmR7VE1zqKw==")
+                //.password("{SSHA}Cnaz+iY1ysAzuUSSn8aLyiBQwNrcmR7VE1zqKw==")
+                // Password using BCrypt. We use {bcrypt} to indicate which password encoder we'll use.
+                .password("{bcrypt}$2a$10$Bcu6TPxcxTBA.vf5ZczILO7tfAhaX4sJ3B0M6cKqusboqhWV03Wxy")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
@@ -73,17 +76,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.password("password")
                 // Password encode using LDAP
                 //.password("{SSHA}nRTMXs6l1VdyL19ZCPh4PgMl0O03dMp9LuWYUA==")
-                // Password using SHA-256
-                //.password("0176a42f78344abe8899099f1137814b26caa248a7c246f75bef830ad984836cdf236ad11697b790")
+                // Password using SHA-256. We use {sha256} to indicate which password encoder we'll use.
+                .password("{sha256}244f0c01da4c89e35b89927f8920c634fa9f92d2edf6b49168c5b1eb1f240f44bc5a56f1290f42e7")
                 // Password using BCrypt
-                .password("$2a$10$ebiFTDBHSrTWylESpbVFzOYtRJAC1hgnPQDCFs7XUAZWQiVZnjPp6")
+                //.password("$2a$10$ebiFTDBHSrTWylESpbVFzOYtRJAC1hgnPQDCFs7XUAZWQiVZnjPp6")
                 .roles("USER");
 
         auth.inMemoryAuthentication()
                 .withUser("scott")
                 //.password("{noop}tiger")
                 // Using NoOpPasswordEncoder Bean we don't need to use {noop} in password
-                .password("tiger")
+                //.password("tiger")
+                // Password encode using LDAP. We use {ldap} to indicate which password encoder we'll use.
+                .password("{ldap}{SSHA}aXLGJm4Ki/iUq4wx1m5htNjWlLc+ArEryso+vQ==")
                 .roles("CUSTOMER");
     }
 
@@ -111,8 +116,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // Password using BCrypt. This is the Spring recommendation.
     // Always generates a different hashed string using a SALT value.
     // It can setting up a strong in the constructor
-    @Bean
+    /*@Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }*/
+
+    // Using PasswordEncoderFactories.createDelegatingPasswordEncoder() we can use different password encoders
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
