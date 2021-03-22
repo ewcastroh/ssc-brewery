@@ -57,4 +57,18 @@ public class PasswordEncodingTest {
         assertTrue(bCrypt.matches(PASSWORD, bCrypt1));
         assertTrue(bCrypt.matches(PASSWORD, bCrypt2));
     }
+
+    @Test
+    void bCryptWithStrength15Test() {
+        PasswordEncoder bCrypt = new BCryptPasswordEncoder(15);
+        String bCrypt1 = bCrypt.encode(PASSWORD);
+        String bCrypt2 = bCrypt.encode(PASSWORD);
+        String bCrypt3 = bCrypt.encode("tiger");
+        System.out.println("BCrypt Encoded 1: ".concat(bCrypt1));
+        System.out.println("BCrypt Encoded 2: ".concat(bCrypt2));
+        System.out.println("BCrypt Encoded 3: ".concat(bCrypt3));
+        assertTrue(bCrypt.matches(PASSWORD, bCrypt1));
+        assertTrue(bCrypt.matches(PASSWORD, bCrypt2));
+        assertTrue(bCrypt.matches("tiger", bCrypt3));
+    }
 }

@@ -89,7 +89,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Using NoOpPasswordEncoder Bean we don't need to use {noop} in password
                 //.password("tiger")
                 // Password encode using LDAP. We use {ldap} to indicate which password encoder we'll use.
-                .password("{ldap}{SSHA}aXLGJm4Ki/iUq4wx1m5htNjWlLc+ArEryso+vQ==")
+                //.password("{ldap}{SSHA}aXLGJm4Ki/iUq4wx1m5htNjWlLc+ArEryso+vQ==")
+                // Password using BCrypt with strength of 15
+                .password("{bcrypt15}$2a$15$zsy5wQIdEvzZiTbiA34EMOndfvOGfuqhE.hPyQpJzngZpkWCZiX9m")
                 .roles("CUSTOMER");
     }
 
