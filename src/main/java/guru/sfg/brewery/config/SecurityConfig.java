@@ -69,8 +69,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.password("password")
                 // Using NoOpPasswordEncoder Bean we don't need to use {noop} in password
                 //.password("password")
-                // Password encode using Ldap
-                .password("{SSHA}nRTMXs6l1VdyL19ZCPh4PgMl0O03dMp9LuWYUA==")
+                // Password encode using LDAP
+                //.password("{SSHA}nRTMXs6l1VdyL19ZCPh4PgMl0O03dMp9LuWYUA==")
+                // Password using SHA-256
+                .password("0176a42f78344abe8899099f1137814b26caa248a7c246f75bef830ad984836cdf236ad11697b790")
                 .roles("USER");
 
         auth.inMemoryAuthentication()
